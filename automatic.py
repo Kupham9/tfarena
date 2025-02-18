@@ -15,24 +15,24 @@ SLEEP_VALUE_RGL = 3 # time delay between RGL API requests
 SLEEP_VALUE_ETF2L = 3 # time delay between ETF2L requests
 
 
-def convert_id64_to_id3(id64: int) -> tuple[int, str]:
-    conversion_factor: int = 76561197960265728
-    id3_prefix = 'U:1:'
-    id3 = abs(id64 - conversion_factor) 
-    return (id3, id3_prefix + id3)
+# def convert_id64_to_id3(id64: int) -> tuple[int, str]:
+#     conversion_factor: int = 76561197960265728
+#     id3_prefix = 'U:1:'
+#     id3 = abs(id64 - conversion_factor) 
+#     return (id3, id3_prefix + id3)
 
 
-def get_rank_conversions(filename: str) -> json:
-    with open(filename) as f:
-        return json.loads(f)
+# def get_rank_conversions(filename: str) -> json:
+#     with open(filename) as f:
+#         return json.loads(f)
 
-def append_row(frame, data):
-    frame.loc[len(frame)] = data
-    return(frame)
+# def append_row(frame, data):
+#     frame.loc[len(frame)] = data
+#     return(frame)
 
 
 # TrendsTF loop:
-def trendsTF_main_loop(ids) -> None:
+def trendsTF_main_loop(ids: list) -> None:
     trends_df = pd.read_csv(TRENDSTF_FN)
 
     for id in ids:
@@ -42,8 +42,9 @@ def trendsTF_main_loop(ids) -> None:
             if data:
                 trends_df.loc[len(trends_df)] = data
                 time.sleep(SLEEP_VALUE_TTF) # added to avoid rate limiting... fml
-
-    trends_df.to_csv(TRENDSTF_FN, index=False)
+            print(f"TTF: {id}")
+    trends_df.to_csv(TRENDSTF_FN, index=False, mode="w")
+    
 
 
 
@@ -64,9 +65,9 @@ def rgl_main_loop(ids: list) -> None:
                 val = [steam_id, conv['RGL'][fields.get('sixes')], conv['RGL'][fields.get('highlander')], conv['RGL'][fields.get('prolander')]]
                 rgl_df.loc[len(rgl_df)] = val
                 time.sleep(SLEEP_VALUE_RGL)
+            print(f"RGL: {id}")
 
-
-    rgl_df.to_csv(RGL_FN, index=False)
+    rgl_df.to_csv(RGL_FN, index=False, mode="w")
 
 
 
@@ -80,8 +81,8 @@ def etf2l_main_loop(ids: list) -> None:
                 val = [id, data[0], data[1]]
                 etf2l_df.loc[len(etf2l_df)] = val
                 time.sleep(SLEEP_VALUE_ETF2L)
-
-    etf2l_df.to_csv(ETF2L_FN, index=False)
+            print(f"ETF2L: {id}")
+    etf2l_df.to_csv(ETF2L_FN, index=False, mode="w")
 
 
 
@@ -96,16 +97,20 @@ def main() -> None:
             steam_id = steam_id.strip()
             if len(steam_id) == 17 and steam_id.isnumeric(): # has to be 17 in length
                 ids.append(steam_id)
-
+    print("Opened Steam IDs...")
 
     # threading each task in parallel
     t1 = threading.Thread(target=trendsTF_main_loop, args=(ids,))
     t2 = threading.Thread(target=rgl_main_loop, args=(ids,))
     t3 = threading.Thread(target=etf2l_main_loop, args=(ids,))
 
+
     t1.start()
+    print("Started thread 1...")
     t2.start()
+    print("Started thread 2...")
     t3.start()
+    print("Started thread 3...")
 
     t1.join()
     t2.join()
@@ -114,3 +119,4 @@ def main() -> None:
     
 if __name__ == "__main__":
     main()
+

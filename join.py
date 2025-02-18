@@ -18,5 +18,8 @@ merged_df = merged_df.merge(df_etf2l, on="SteamID", how="outer")
     Here's where I will handle the empty value cases (should be NaN or None)
     This only seems to happen when either RGL or the ETF2L api returns a 404 for the player
 '''
+merged_df.fillna(0, inplace=True) # filled with 0 to denote it being a null value
+
+
 
 merged_df.to_csv("players.csv")
