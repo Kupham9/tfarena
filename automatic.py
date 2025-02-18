@@ -6,13 +6,13 @@ import pandas as pd
 import threading
 import time
 
-RGL_FN = 'RGL.csv'
-ETF2L_FN = 'ETF2l.csv'
-TRENDSTF_FN = 'TrendsTF.csv'
-CONV_JSON = 'rank_conversion.json'
-SLEEP_VALUE_TTF = 9.5
-SLEEP_VALUE_RGL = 3
-SLEEP_VALUE_ETF2L = 3
+RGL_FN = 'RGL.csv' #rgl csv file name
+ETF2L_FN = 'ETF2l.csv' #etf2l csv file name
+TRENDSTF_FN = 'TrendsTF.csv' # trendstf csv file name
+CONV_JSON = 'rank_conversion.json' # rank conversion file name
+SLEEP_VALUE_TTF = 9.5 # time delay between TrendsTF requests
+SLEEP_VALUE_RGL = 3 # time delay between RGL API requests
+SLEEP_VALUE_ETF2L = 3 # time delay between ETF2L requests
 
 
 def convert_id64_to_id3(id64: int) -> tuple[int, str]:
@@ -32,7 +32,7 @@ def append_row(frame, data):
 
 
 # TrendsTF loop:
-def trendsTF_main_loop(ids):
+def trendsTF_main_loop(ids) -> None:
     trends_df = pd.read_csv(TRENDSTF_FN)
 
     for id in ids:
@@ -48,7 +48,7 @@ def trendsTF_main_loop(ids):
 
 
 
-def rgl_main_loop(ids):
+def rgl_main_loop(ids: list) -> None:
     rgl_df = pd.read_csv(RGL_FN)
     for id in ids:
         steam_id_set = set(rgl_df['SteamID'].astype(str))
@@ -70,7 +70,7 @@ def rgl_main_loop(ids):
 
 
 
-def etf2l_main_loop(ids):
+def etf2l_main_loop(ids: list) -> None:
     etf2l_df = pd.read_csv(ETF2L_FN)
     for id in ids:
         steam_id_set = set(etf2l_df['SteamID'].astype(str))
@@ -87,7 +87,7 @@ def etf2l_main_loop(ids):
 
 #main loop:
 
-def main():
+def main() -> None:
     ids = []
     # open file of steam ids and verify length and whether it is numeric
     with open('steam_ids.txt') as steam_ids:

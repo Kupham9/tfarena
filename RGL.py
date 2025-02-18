@@ -6,7 +6,7 @@ import json
 '''
 
 
-def batch_request(steam_ids: list):
+def batch_request(steam_ids: list) -> dict | RuntimeError:
     url = "https://api.rgl.gg/v0/profile/getmany"
     headers = {
     "accept": "*/*",
@@ -24,7 +24,7 @@ def batch_request(steam_ids: list):
         return RuntimeError
     
 
-def single_request(steam_id):
+def single_request(steam_id) -> dict | int:
     url = f'https://api.rgl.gg/v0/profile/{steam_id}'
     res = req.get(url)
 
@@ -37,7 +37,7 @@ def single_request(steam_id):
         return -1
 
 
-def parse_data(response: json):
+def parse_data(response: json) -> list:
     player_data = []
 
     if response == -1:
