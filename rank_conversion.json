@@ -1,0 +1,40 @@
+{
+    "ETF2L": {
+        "Premiership": 9,
+        "Division 1": 7,
+        "Division 2": 7,
+        "Division 3": 5,
+        "Division 4": 5,
+        "Division 5": 3,
+        "Mid" : 5,
+        "High" : 7,
+        "Low": 3,
+        "Open": 2,
+        "-": 1,
+        "None" : 0
+    },
+    "RGL": {
+        "Invite": 9,
+        "Advanced": 7,
+        "Main": 5,
+        "Intermediate": 3,
+        "Amateur": 2,
+        "Newcomer": 1,
+        "RGL-Invite": 9,
+        "RGL-Advanced": 7,
+        "RGL-Main": 5,
+        "RGL-Intermediate": 3,
+        "RGL-Amateur": 2,
+        "RGL-Newcomer": 1,
+        "-" : 1,
+        "" : 1
+    },
+    "OzFortress": {
+        "Premier": 9,
+        "High": 7,
+        "Intermediate": 5,
+        "Main": 3,
+        "Open": 2,
+        "-": 1
+    }
+}
