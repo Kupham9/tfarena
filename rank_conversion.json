@@ -14,6 +14,16 @@
         "None" : 0
     },
     "RGL": {
+        "RGL-Div 1" : 7,
+        "RGL-Div 2" : 7,
+        "RGL-Div 3" : 5,
+        "RGL-Div 4" : 5,
+        "RGL-Div 5" : 3,
+        "RGL-Div 6" : 3,
+        "RGL-Div 7" : 2,
+        "RGL-Div 8" : 1,
+        "Admin Placement" : 0,
+
         "Invite": 9,
         "Advanced": 7,
         "Main": 5,

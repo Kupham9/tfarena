@@ -1,4 +1,5 @@
 import pandas as pd
+from tqdm import tqdm
 
 RGL_FN = 'RGL.csv'
 ETF2L_FN = 'ETF2l.csv'
