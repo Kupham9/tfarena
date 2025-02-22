@@ -56,5 +56,5 @@ def parse_req_json(data):
 
 
 
-    return (max(HL_temp), max(SIXES_temp))
+    return (max(SIXES_temp), max(HL_temp))
 

@@ -120,7 +120,7 @@ def parse_request(teams: list) -> tuple:
     if not SIXES:
         SIXES.append(1)
 
-    return (max(HL), max(SIXES))
+    return (max(SIXES), max(HL))
 
 
 
