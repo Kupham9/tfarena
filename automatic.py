@@ -34,8 +34,8 @@ SLEEP_VALUE_ETF2L = 3 # time delay between ETF2L requests
 
 # TrendsTF loop:
 def trendsTF_main_loop(ids: list) -> None:
-    trends_df = pd.read_csv(TRENDSTF_FN)
     for id in tqdm(ids, desc="TTF", position=0, leave=True, colour="blue"):
+        trends_df = pd.read_csv(TRENDSTF_FN)
         steam_id_set = set(trends_df['SteamID'].astype(str))
         if id not in steam_id_set:
             data = ttf.parse_player_data(ttf.get_player_https_request(id), id)
@@ -43,15 +43,15 @@ def trendsTF_main_loop(ids: list) -> None:
                 trends_df.loc[len(trends_df)] = data
                 time.sleep(SLEEP_VALUE_TTF) # added to avoid rate limiting... fml
             # print(f"TTF: {id}")
-    trends_df.to_csv(TRENDSTF_FN, index=False, mode="w")
+        trends_df.to_csv(TRENDSTF_FN, index=False, mode="w")
     
 
 
 
 
 def rgl_main_loop(ids: list) -> None:
-    rgl_df = pd.read_csv(RGL_FN)
     for id in tqdm(ids, desc="RGL", position=1, leave=True, colour='red'):
+        rgl_df = pd.read_csv(RGL_FN)
         steam_id_set = set(rgl_df['SteamID'].astype(str))
         if id not in steam_id_set:
             rank = rgl.parse_request((rgl.single_request(id)))
@@ -60,13 +60,13 @@ def rgl_main_loop(ids: list) -> None:
             time.sleep(SLEEP_VALUE_RGL)
             # print(f"RGL: {id}")
 
-    rgl_df.to_csv(RGL_FN, index=False, mode="w")
+        rgl_df.to_csv(RGL_FN, index=False, mode="w")
 
 
 
 def etf2l_main_loop(ids: list) -> None:
-    etf2l_df = pd.read_csv(ETF2L_FN)
     for id in tqdm(ids, desc="ETF2L", position=2, leave=True, colour='green'):
+        etf2l_df = pd.read_csv(ETF2L_FN)
         steam_id_set = set(etf2l_df['SteamID'].astype(str))
         if id not in steam_id_set:
             data = etf2l.parse_req_json(etf2l.single_request(id))
@@ -75,7 +75,7 @@ def etf2l_main_loop(ids: list) -> None:
                 etf2l_df.loc[len(etf2l_df)] = row
                 time.sleep(SLEEP_VALUE_ETF2L)
             # print(f"ETF2L: {id}")
-    etf2l_df.to_csv(ETF2L_FN, index=False, mode="w")
+        etf2l_df.to_csv(ETF2L_FN, index=False, mode="w")
 
 
 
