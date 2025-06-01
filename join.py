@@ -1,27 +1,33 @@
+# join.py
 import pandas as pd
-from tqdm import tqdm
+import os
 
-RGL_FN = 'RGL.csv'
-ETF2L_FN = 'ETF2l.csv'
-TRENDSTF_FN = 'TrendsTF.csv'
+BASE = os.path.join(os.path.dirname(__file__), "csvs")
+FILES = {
+    "ttf":  os.path.join(BASE, "TrendsTF.csv"),
+    "rgl":  os.path.join(BASE, "RGL.csv"),
+    "etf":  os.path.join(BASE, "ETF2L.csv"),
+}
+OUT   = os.path.join(BASE, "players.csv")
 
+# ── read the three caches ───────────────────────────────────────────────────────
+ttf  = pd.read_csv(FILES["ttf"])
+rgl  = pd.read_csv(FILES["rgl"])
+etf  = pd.read_csv(FILES["etf"])
 
+# quick sanity-check – tells you immediately if the files slipped out of sync
+if not (len(ttf) == len(rgl) == len(etf)):
+    raise ValueError(
+        f"Row-count mismatch: TrendsTF={len(ttf)}, RGL={len(rgl)}, ETF2L={len(etf)}"
+    )
 
-df_trends = pd.read_csv(TRENDSTF_FN)
-df_rgl = pd.read_csv(RGL_FN)
-df_etf2l = pd.read_csv(ETF2L_FN)
+# get rid of the extra SteamID columns so we keep only the one that’s already in ttf
+rgl = rgl.drop(columns=["SteamID"], errors="ignore")
+etf = etf.drop(columns=["SteamID"], errors="ignore")
 
-print("joining dataframes...")
-merged_df = df_trends.merge(df_rgl, on="SteamID", how="outer")
-merged_df = merged_df.merge(df_etf2l, on="SteamID", how="outer")
+# ── horizontal concatenation keeps the exact row order you already have ─────────
+players = pd.concat([ttf, rgl, etf], axis=1)
 
-'''
-    Here's where I will handle the empty value cases (should be NaN or None)
-    This only seems to happen when either RGL or the ETF2L api returns a 404 for the player
-'''
-merged_df.fillna(0, inplace=True) # filled with 0 to denote it being a null value
-
-
-print("outputting to CSV...")
-merged_df.to_csv("players.csv", index=False)
+# **don’t** overwrite blanks – leave NaN/"" exactly as they are
+players.to_csv(OUT, index=False)
 print("Done!")

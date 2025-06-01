@@ -9,13 +9,15 @@ import pandas as pd
     Creating a module for scraping and working with data pulled from TrendsTF
 '''
 
-
 def get_player_https_request(ID):
-    http_request = req.get(f'https://trends.tf/player/{ID.strip()}/totals')
+    if id == "NULL" or id == "null":
+        return 0
+    else:
+        http_request = req.get(f'https://trends.tf/player/{ID.strip()}/totals')
 
     if http_request.status_code == 404:
-        print(f'Invalid ID: {ID}')
-        return()
+        # print(f'Invalid ID: {ID}')
+        return 0
     else:
         return(http_request)
     
